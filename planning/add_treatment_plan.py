@@ -181,9 +181,9 @@ class add_treatment_plan :
                                                         CouchRotationAngle=0, CouchPitchAngle=0, CouchRollAngle=0, CollimatorAngle=0)
 
               self.plan.PlanOptimizations[0].OptimizationParameters.TreatmentSetupSettings[0].BeamSettings[0].TomoPropertiesPerBeam.EditTomoBasedBeamOptimizationSettings(
-                  JawMode="Dynamic", PitchTomoHelical=0.43, PitchTomoDirect=None, 
+                  JawMode="Dynamic", PitchTomoHelical=0.303, PitchTomoDirect=None, 
                   BackJawPosition=1, FrontJawPosition=-1, MaxDeliveryTime=None,
-                  MaxGantryPeriod=None, MaxDeliveryTimeFactor=1.50)
+                  MaxGantryPeriod=None, MaxDeliveryTimeFactor=1.2)
         
     # def apply_clinical_goals(self):
     #     # plan = get_current('Plan')
