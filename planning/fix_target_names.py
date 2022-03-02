@@ -20,7 +20,7 @@ class fix_structure_names:
         self.course_number = self.get_course_number()
         
         target_structures = [ROI for ROI in self.case.PatientModel.RegionsOfInterest if
-                             ROI.Type in ['Ptv', 'Ctv','Gtv'] ]
+                             ROI.Type in ['Ptv', 'Ctv','Gtv'] and not('ePTV' in ROI.Name) ]
         _ = [self.add_course_number_to_name(ROI) for ROI in target_structures]
         
   
