@@ -24,21 +24,30 @@ class initial_optimization():
     def delete_broken_functions(self):
 
         has_contours = {} #create dictionary because it takes a while to check for contours per structure
+        deleted_contours = set()
         for f in self.plan.PlanOptimizations[0].Objective.ConstituentFunctions:
             print('HELLO3')
             ROI_name = f.ForRegionOfInterest.Name
             if ROI_name in has_contours:
                 if has_contours[ROI_name] == False:
                     f.DeleteFunction()
-                    print('HELLO2')
+                    deleted_contours.add(ROI_name)
                     
             else: #figure out whether it has contours, if not delete
                 ROI_geo = self.case.PatientModel.StructureSets[self.examination.Name].RoiGeometries[ROI_name]
                 has_contours[ROI_name] = ROI_geo.HasContours()
                 if has_contours[ROI_name] == False:
-                    print('HELLO')
+                    
                     f.DeleteFunction()
-
+                    deleted_contours.add(ROI_name)
+            
+        self.print_warning_message(deleted_contours)
+        
+    def print_warning_message(deleted_contours):
+        message = 'Cost functions assosciated with the following uncontoured structures were deleted :'
+        structures = ', '.join(deleted_contours)
+        show_result_message(message+ structures)
+    
         
         
     def optimize(self):
