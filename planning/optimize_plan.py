@@ -54,5 +54,9 @@ class initial_optimization():
         for i in range(3):
             self.plan.PlanOptimizations[0].RunOptimization()
 
+
+def do_task(**options):
+    initial_optimization()
+    
 if __name__ == '__main__':
     initial_optimization()
