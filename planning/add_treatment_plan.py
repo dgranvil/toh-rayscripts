@@ -131,22 +131,37 @@ class add_treatment_plan :
         
         with CompositeAction('Add Treatment plan'):
             plan_name = self.get_plan_name()
-            self.plan = self.case.AddNewPlan(PlanName=plan_name, PlannedBy=r"Planner", Comment=r"", ExaminationName=self.exam.Name, IsMedicalOncologyPlan=False, AllowDuplicateNames=False)
-        
             
-            
+            self.plan = self.case.AddNewPlan(PlanName=plan_name, PlannedBy=r"Planner", Comment="", ExaminationName==self.exam.Name, IsMedicalOncologyPlan=False, AllowDuplicateNames=False)
+
             self.beam_set = self.plan.AddNewBeamSet(
-                Name=self.site_code, ExaminationName=self.exam.Name, 
-                MachineName=self.machine_name, Modality="Photons", 
-                TreatmentTechnique=self.treatment_technique, 
+                Name=self.site_code, ExaminationName=self.exam.Name, MachineName=self.machine_name,
+                Modality="Photons", TreatmentTechnique=self.treatment_technique,
                 PatientPosition="HeadFirstSupine", NumberOfFractions=self.num_fractions, 
                 CreateSetupBeams=False, UseLocalizationPointAsSetupIsocenter=False,
-                Comment=r"", RbeModelReference=None, EnableDynamicTrackingForVero=False,
+                UseUserSelectedIsocenterSetupIsocenter=False, Comment="", 
+                RbeModelName=None, EnableDynamicTrackingForVero=False, 
                 NewDoseSpecificationPointNames=[], NewDoseSpecificationPoints=[], 
-                MotionSynchronizationTechniqueSettings={ 'DisplayName': None, 'MotionSynchronizationSettings': None, 'RespiratoryIntervalTime': None, 'RespiratoryPhaseGatingDutyCycleTimePercentage': None })
+                MotionSynchronizationTechniqueSettings={ 'DisplayName': None, 'MotionSynchronizationSettings': None, 'RespiratoryIntervalTime': None, 'RespiratoryPhaseGatingDutyCycleTimePercentage': None },
+                Custom=None)
 
-            self.beam_set.AddDosePrescriptionToRoi(RoiName=self.prescription_ROI, DoseVolume=95, PrescriptionType="DoseAtVolume", DoseValue=self.prescription_dose , RelativePrescriptionLevel=1, AutoScaleDose=False)
             self.beam_set.SetDefaultDoseGrid(VoxelSize={ 'x': 0.2, 'y': 0.2, 'z': 0.2 })
+            self.beam_set.AddDosePrescriptionToRoi(RoiName=self.prescription_ROI, DoseVolume=95, PrescriptionType="DoseAtVolume", DoseValue=self.prescription_dose, RelativePrescriptionLevel=1, AutoScaleDose=False)
+
+            # self.plan = self.case.AddNewPlan(PlanName=plan_name, PlannedBy=r"Planner", Comment=r"", ExaminationName=self.exam.Name, IsMedicalOncologyPlan=False, AllowDuplicateNames=False)
+            
+            # self.beam_set = self.plan.AddNewBeamSet(
+            #     Name=self.site_code, ExaminationName=self.exam.Name, 
+            #     MachineName=self.machine_name, Modality="Photons", 
+            #     TreatmentTechnique=self.treatment_technique, 
+            #     PatientPosition="HeadFirstSupine", NumberOfFractions=self.num_fractions, 
+            #     CreateSetupBeams=False, UseLocalizationPointAsSetupIsocenter=False,
+            #     Comment=r"", RbeModelReference=None, EnableDynamicTrackingForVero=False,
+            #     NewDoseSpecificationPointNames=[], NewDoseSpecificationPoints=[], 
+            #     MotionSynchronizationTechniqueSettings={ 'DisplayName': None, 'MotionSynchronizationSettings': None, 'RespiratoryIntervalTime': None, 'RespiratoryPhaseGatingDutyCycleTimePercentage': None })
+
+            # self.beam_set.AddDosePrescriptionToRoi(RoiName=self.prescription_ROI, DoseVolume=95, PrescriptionType="DoseAtVolume", DoseValue=self.prescription_dose , RelativePrescriptionLevel=1, AutoScaleDose=False)
+            # self.beam_set.SetDefaultDoseGrid(VoxelSize={ 'x': 0.2, 'y': 0.2, 'z': 0.2 })
             
         self.patient.Save()
         self.plan.SetCurrent()
