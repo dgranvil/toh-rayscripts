@@ -43,7 +43,7 @@ class initial_optimization():
             
         self.print_warning_message(deleted_contours)
         
-    def print_warning_message(deleted_contours):
+    def print_warning_message(self,deleted_contours):
         message = 'Cost functions assosciated with the following uncontoured structures were deleted :'
         structures = ', '.join(deleted_contours)
         show_result_message(message+ structures)
