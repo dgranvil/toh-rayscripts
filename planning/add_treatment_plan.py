@@ -132,7 +132,7 @@ class add_treatment_plan :
         with CompositeAction('Add Treatment plan'):
             plan_name = self.get_plan_name()
             
-            self.plan = self.case.AddNewPlan(PlanName=plan_name, PlannedBy=r"Planner", Comment="", ExaminationName==self.exam.Name, IsMedicalOncologyPlan=False, AllowDuplicateNames=False)
+            self.plan = self.case.AddNewPlan(PlanName=plan_name, PlannedBy=r"Planner", Comment="", ExaminationName=self.exam.Name, IsMedicalOncologyPlan=False, AllowDuplicateNames=False)
 
             self.beam_set = self.plan.AddNewBeamSet(
                 Name=self.site_code, ExaminationName=self.exam.Name, MachineName=self.machine_name,
