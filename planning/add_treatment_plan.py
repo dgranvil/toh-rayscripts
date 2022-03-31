@@ -133,7 +133,7 @@ class add_treatment_plan :
             plan_name = self.get_plan_name()
             self.plan = self.case.AddNewPlan(PlanName=plan_name, PlannedBy=r"Planner", Comment=r"", ExaminationName=self.exam.Name, IsMedicalOncologyPlan=False, AllowDuplicateNames=False)
         
-            self.beam_set.SetDefaultDoseGrid(VoxelSize={ 'x': 0.2, 'y': 0.2, 'z': 0.2 })
+            
             
             self.beam_set = self.plan.AddNewBeamSet(
                 Name=self.site_code, ExaminationName=self.exam.Name, 
@@ -146,6 +146,7 @@ class add_treatment_plan :
                 MotionSynchronizationTechniqueSettings={ 'DisplayName': None, 'MotionSynchronizationSettings': None, 'RespiratoryIntervalTime': None, 'RespiratoryPhaseGatingDutyCycleTimePercentage': None })
 
             self.beam_set.AddDosePrescriptionToRoi(RoiName=self.prescription_ROI, DoseVolume=95, PrescriptionType="DoseAtVolume", DoseValue=self.prescription_dose , RelativePrescriptionLevel=1, AutoScaleDose=False)
+            self.beam_set.SetDefaultDoseGrid(VoxelSize={ 'x': 0.2, 'y': 0.2, 'z': 0.2 })
             
         self.patient.Save()
         self.plan.SetCurrent()
