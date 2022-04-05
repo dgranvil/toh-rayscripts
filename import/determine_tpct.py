@@ -98,9 +98,9 @@ class determine_tpct:
             date = str(date_time.Day) +  months[date_time.Month-1] + str(date_time.Year)
             modality = exam.EquipmentInfo.Modality
             name = exam.Name
-            description = dcmdata['SeriesModule']['SeriesDescription'] 
+            description = dcmdata['SeriesModule']['SeriesDescription']
             if description == None:
-                description = ''
+            	description = ''
             key = '  '.join((date, modality, name, description))
             scan_dict[key] = exam
             #if best guess tpct is found, and this is it, then make it first in the list to display

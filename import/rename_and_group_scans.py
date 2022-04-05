@@ -58,29 +58,30 @@ class rename_and_group_scans:
                 scanType = 'TPCT'
                 ending = ''
                 
-                if self.detect_tags(dcmdata, tags = ['Venous']):
-                    ending += '_VEN'
-                elif self.detect_tags(dcmdata, tags = ['Arterial']):
-                    ending += '_ART'
-                elif self.detect_tags(dcmdata, tags = ['O-MAR','OMR','OMAR']):
-                    ending += '_OMR'
-                elif self.detect_tags(dcmdata, tags = ['MIP']):
-                    ending += '_MIP'
-                    CT4DGroup[dcmdata['StudyModule']['StudyInstanceUID']].append(examination)
-                elif self.detect_tags(dcmdata, tags = ['AIP']):
-                    ending += '_AIP'
-                    CT4DGroup[dcmdata['StudyModule']['StudyInstanceUID']].append(examination)
-                elif self.detect_tags(dcmdata, tags = ['E1 Linear']):
-                    if dcmdata['SeriesModule']['SeriesDescription'][0:2] == '0%':
-                        ending += '_P0'
+                if dcmdata['SeriesModule']['SeriesDescription'] != None:
+                    if self.detect_tags(dcmdata, tags = ['Venous']):
+                        ending += '_VEN'
+                    elif self.detect_tags(dcmdata, tags = ['Arterial']):
+                        ending += '_ART'
+                    elif self.detect_tags(dcmdata, tags = ['O-MAR','OMR','OMAR']):
+                        ending += '_OMR'
+                    elif self.detect_tags(dcmdata, tags = ['MIP']):
+                        ending += '_MIP'
                         CT4DGroup[dcmdata['StudyModule']['StudyInstanceUID']].append(examination)
-                    else: 
-                        ending += '_P' + dcmdata['SeriesModule']['SeriesDescription'][0:2]
+                    elif self.detect_tags(dcmdata, tags = ['AIP']):
+                        ending += '_AIP'
                         CT4DGroup[dcmdata['StudyModule']['StudyInstanceUID']].append(examination)
-                elif self.detect_tags(dcmdata, tags = ['DIBH']):
-                    ending += '_DIBH'
-                elif self.detect_tags(dcmdata, tags = ['FB']):
-                    ending += '_FB'
+                    elif self.detect_tags(dcmdata, tags = ['E1 Linear']):
+                        if dcmdata['SeriesModule']['SeriesDescription'][0:2] == '0%':
+                            ending += '_P0'
+                            CT4DGroup[dcmdata['StudyModule']['StudyInstanceUID']].append(examination)
+                        else: 
+                            ending += '_P' + dcmdata['SeriesModule']['SeriesDescription'][0:2]
+                            CT4DGroup[dcmdata['StudyModule']['StudyInstanceUID']].append(examination)
+                    elif self.detect_tags(dcmdata, tags = ['DIBH']):
+                        ending += '_DIBH'
+                    elif self.detect_tags(dcmdata, tags = ['FB']):
+                        ending += '_FB'
 
             elif StationName in self.TomoUnits:
             	scanType = 'MVCT'
@@ -174,15 +175,20 @@ class rename_and_group_scans:
 
 
     def detect_tags(self,dcmdata,tags):
-        if dcmdata['SeriesModule']['SeriesDescription'] != None:
-            return sum([t in dcmdata['SeriesModule']['SeriesDescription'] for 
+        print('dal',dcmdata['SeriesModule']['SeriesDescription'])
+        return sum([t in dcmdata['SeriesModule']['SeriesDescription'] for 
                     t in tags] ) 
-        else:
-            return None
 
 
 def do_task(**options):
     rename_and_group_scans().perform_renaming_and_grouping()
+
+
+
+
+
+
+
 
 
 
