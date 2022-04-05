@@ -174,8 +174,11 @@ class rename_and_group_scans:
 
 
     def detect_tags(self,dcmdata,tags):
-        return sum([t in dcmdata['SeriesModule']['SeriesDescription'] for 
+        if dcmdata['SeriesModule']['SeriesDescription'] != None:
+            return sum([t in dcmdata['SeriesModule']['SeriesDescription'] for 
                     t in tags] ) 
+        else:
+            return None
 
 
 def do_task(**options):
