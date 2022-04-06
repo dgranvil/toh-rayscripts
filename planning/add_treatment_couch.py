@@ -76,8 +76,10 @@ class add_treatment_couch:
             #Set default dose grid size if not already done so
             #Maybe these should be the one that are already selected.
             current_voxel_size = self.plan.TreatmentCourse.TotalDose.InDoseGrid.VoxelSize
-            self.plan.SetDefaultDoseGrid(VoxelSize=current_voxel_size)
-            self.plan.TreatmentCourse.TotalDose.UpdateDoseGridStructures()
+            self.beam_set = get_current('BeamSet')
+            #self.beam_set.UpdateDoseGrid(VoxelSize=current_voxel_size)
+            self.beam_set.SetDefaultDoseGrid(VoxelSize=current_voxel_size)
+            #self.plan.TreatmentCourse.TotalDose.UpdateDoseGridStructures()
 
         elif couch_type == 'None':
             show_warning('Error: no couch added, please add manually', level = 'warn')
@@ -112,10 +114,6 @@ def do_task(**options):
     print("\n\n\n**** COUCH PLACEMENT BEGINNING\n\n\n")
     add_treatment_couch()
     print("\n\n\n**** COUCH PLACEMENT FINISHED\n\n\n")
-
-
-
-
 
 
 
