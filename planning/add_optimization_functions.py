@@ -34,8 +34,14 @@ class add_optimization_functions :
         
         # if self.treatment_technique =='TomoHelical':
         #     self.plan.PlanOptimizations[0].OptimizationParameters.TreatmentSetupSettings[0].BeamSettings[0].TomoPropertiesPerBeam.EditTomoBasedBeamOptimizationSettings(JawMode="Dynamic", PitchTomoHelical=0.43, PitchTomoDirect=None, BackJawPosition=1, FrontJawPosition=-1, MaxDeliveryTime=None, MaxGantryPeriod=None, MaxDeliveryTimeFactor=1.5)
+        template_list = [x['Name'] for x in self.db.GetOptimizationFunctionTemplateInfo() if self.careplan in x['Name']]
+        popup_opt = popup('Select optimization template below', 
+            options=template_list, 
+            text_input_label="Select template" 
+            ) 
 
-        optimization_functions_template = self.db.LoadTemplateOptimizationFunctions(templateName =self.careplan+' OC script', lockMode = 'Read' )
+        optimization_functions_template = self.db.LoadTemplateOptimizationFunctions(templateName =popup_opt['option'], lockMode = 'Read' )
+        #optimization_functions_template = self.db.LoadTemplateOptimizationFunctions(templateName =self.careplan+' OC script', lockMode = 'Read' )
         self.plan.PlanOptimizations[0].ApplyOptimizationTemplate(Template=optimization_functions_template)
         
         optimization_functions_template.Unload()
@@ -51,7 +57,7 @@ class add_optimization_functions :
         
         
 def do_task(**options):
-    print(options)
+   # print(options)
     
     add_optimization_functions(careplan = options['selected_careplan']).do_task()
     
