@@ -19,14 +19,25 @@ class apply_clinical_goals :
         
 
     def apply_clinical_goals(self):
+        
+        template_list = [x['Name'] for x in self.db.GetClinicalGoalTemplateInfo() if self.careplan in x['Name']]
 
-        template_name = self.careplan +' targets&OARs CG'
-        clinical_goals_template = self.db.LoadTemplateClinicalGoals(templateName =template_name, lockMode = 'Read')
-        
-        self.plan.TreatmentCourse.EvaluationSetup.ApplyClinicalGoalTemplate(Template=clinical_goals_template)
-        clinical_goals_template.Unload()
-        
-        # plan.TreatmentCourse.EvaluationSetup.AddClinicalGoal(RoiName=r"PTV5240", GoalCriteria="AtLeast", GoalType="DoseAtVolume", AcceptanceLevel=5240, ParameterValue=0.95, IsComparativeGoal=False, Priority=1)
+        if len(template_list) == 1:
+            template_name = template_list[0]
+            clinical_goals_template = self.db.LoadTemplateClinicalGoals(templateName = template_name, lockMode = 'Read')
+            self.plan.TreatmentCourse.EvaluationSetup.ApplyClinicalGoalTemplate(Template=clinical_goals_template)
+            clinical_goals_template.Unload()
+        elif len(template_list) > 1:
+            popup_cg = popup('Select clinical goal template below', 
+                options=template_list, 
+                text_input_label="Select template" 
+                ) 
+            template_name = popup_cg['option']
+            clinical_goals_template = self.db.LoadTemplateClinicalGoals(templateName = template_name, lockMode = 'Read')
+            self.plan.TreatmentCourse.EvaluationSetup.ApplyClinicalGoalTemplate(Template=clinical_goals_template)
+            clinical_goals_template.Unload()
+        else:
+            show_result_message('No matching clinical goal templates were found. Clinical goals not loaded.', level='warn') 
 
 def do_task(**options):
     
